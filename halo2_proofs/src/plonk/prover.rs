@@ -54,6 +54,7 @@ pub fn create_proof<
     instances: &[&[&[Scheme::Scalar]]],
     mut rng: R,
     transcript: &mut T,
+    start: &Instant,
 ) -> Result<(), Error>
 where
     Scheme::Scalar: WithSmallOrderMulGroup<3> + FromUniformBytes<64>,
@@ -716,6 +717,8 @@ where
         *MSM_COUNTER.lock().unwrap() = BTreeMap::new();
         *FFT_COUNTER.lock().unwrap() = BTreeMap::new();
     }
+
+    println!("Second phase reached after: {:?}ms", start.elapsed().as_millis());
 
     let prover = P::new(params);
     prover
